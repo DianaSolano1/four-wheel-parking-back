@@ -15,6 +15,8 @@ class CreateOwnersTable extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 50);
+            $table->string('document_id', 15)->unique();
             $table->timestamps();
         });
     }

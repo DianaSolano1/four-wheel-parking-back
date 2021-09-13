@@ -120,4 +120,37 @@ class VehicleController extends Controller
             return ['message' => $message];
         }
     }
+
+    /**
+     * @api {GET} vehicle/all
+     *
+     * @queryParam {String} plate
+     * @queryParam {String} owner
+     * @queryParam {Number} page
+     */
+    public function getAll(Request $request) {
+        $plate = $request->query('plate', '');
+        $owner = $request->query('owner', '');
+
+        $vehicleModel = Vehicle::with('brand', 'owner', 'typeVehicle');
+
+        if ($plate !== '') {
+            $vehicleModel->where('license_plate', 'like', '%'.$plate.'%');
+        }
+
+        if ($owner !== '') {
+            $vehicleModel->whereHas('owner', function ($query) use ($owner) {
+                return $query->where('document_id', 'like', '%'.$owner.'%')
+                    ->orWhere('name', 'like', '%'.$owner.'%');
+            });
+        }
+
+        $vehicles = $vehicleModel->paginate();
+
+        if (empty($vehicles)) {
+            return [];
+        }
+
+        return $vehicles;
+    }
 }

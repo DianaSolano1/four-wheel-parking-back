@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post('/vehicle', [VehicleController::class, 'create']);
+Route::get('/vehicle/all', [VehicleController::class, 'getAll']);
 Route::get('/vehicle/{plate}', [VehicleController::class, 'findByPlate']);
 
 Route::get('/owner/{documentId}', [OwnerController::class, 'findByDocument']);

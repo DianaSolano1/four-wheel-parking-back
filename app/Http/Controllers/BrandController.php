@@ -25,9 +25,9 @@ class BrandController extends Controller
         $brands = $brandModel->paginate();
 
         if (empty($brands)) {
-            return [];
+            return ['success'=>false, "message" => "No hay información"];
         }
 
-        return $brands;
+        return ["success"=>true,"data"=>$brands];
     }
 }

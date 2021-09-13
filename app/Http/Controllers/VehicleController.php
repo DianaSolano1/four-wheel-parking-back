@@ -148,9 +148,9 @@ class VehicleController extends Controller
         $vehicles = $vehicleModel->paginate();
 
         if (empty($vehicles)) {
-            return [];
+            return ['success'=>false, "message" => "No hay información"];
         }
 
-        return $vehicles;
+        return ["success"=>true, "data"=>$vehicles];
     }
 }

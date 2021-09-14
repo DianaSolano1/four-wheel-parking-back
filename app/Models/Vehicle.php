@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Vehicle extends Model
 {
     /**
@@ -15,15 +16,18 @@ class Vehicle extends Model
         'license_plate', 'owner_id', 'brand_id', 'type_vehicle_id'
     ];
 
-    public function brand() {
+    public function brand()
+    {
         return $this->belongsTo(Brand::class);
     }
 
-    public function owner() {
+    public function owner()
+    {
         return $this->belongsTo(Owner::class);
     }
 
-    public function typeVehicle() {
+    public function typeVehicle()
+    {
         return $this->belongsTo(TypeVehicle::class);
     }
 }

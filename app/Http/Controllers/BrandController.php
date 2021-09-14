@@ -13,21 +13,18 @@ class BrandController extends Controller
      * @queryParam {String} name
      * @queryParam {Number} page
      */
-    public function getVehiclesCount(Request $request) {
+    public function getVehiclesCount(Request $request)
+    {
         $name = $request->query('name', '');
 
         $brandModel = Brand::withCount(['vehicles']);
 
         if ($name !== '') {
-            $brandModel->where('name', 'like', '%'.$name.'%');
+            $brandModel->where('name', 'like', '%' . $name . '%');
         }
 
         $brands = $brandModel->paginate();
 
-        if (empty($brands)) {
-            return ['success'=>false, "message" => "No hay información"];
-        }
-
-        return ["success"=>true,"data"=>$brands];
+        return ["success" => true, "data" => $brands];
     }
 }

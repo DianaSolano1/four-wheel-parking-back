@@ -16,7 +16,8 @@ class VehicleController extends Controller
      *
      * @param {String} plate
      */
-    public function findByPlate($plate) {
+    public function findByPlate($plate)
+    {
         $vehicle = Vehicle::firstWhere('license_plate', $plate);
 
         if (empty($vehicle)) {
@@ -37,7 +38,8 @@ class VehicleController extends Controller
      * @body {String|Number} type_vehicle Send ID or name
      * @body {Object} owner Send object with ID or documentId or name
      */
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $request->validate([
             'license_plate' => 'required|unique:vehicles|max:8',
             'brand' => 'required',
@@ -59,7 +61,7 @@ class VehicleController extends Controller
                 throw new \Exception('Debes especificar el ID o los datos del propietario');
             }
 
-            if (!empty($owner['id'])){
+            if (!empty($owner['id'])) {
                 $dataOwner = Owner::find($owner['id']);
             } else {
                 $dataOwner = Owner::firstOrCreate(
@@ -128,29 +130,30 @@ class VehicleController extends Controller
      * @queryParam {String} owner
      * @queryParam {Number} page
      */
-    public function getAll(Request $request) {
+    public function getAll(Request $request)
+    {
         $plate = $request->query('plate', '');
         $owner = $request->query('owner', '');
 
         $vehicleModel = Vehicle::with('brand', 'owner', 'typeVehicle');
 
         if ($plate !== '') {
-            $vehicleModel->where('license_plate', 'like', '%'.$plate.'%');
+            $vehicleModel->where('license_plate', 'like', '%' . $plate . '%');
         }
 
         if ($owner !== '') {
             $vehicleModel->whereHas('owner', function ($query) use ($owner) {
-                return $query->where('document_id', 'like', '%'.$owner.'%')
-                    ->orWhere('name', 'like', '%'.$owner.'%');
+                return $query->where('document_id', 'like', '%' . $owner . '%')
+                    ->orWhere('name', 'like', '%' . $owner . '%');
             });
         }
 
         $vehicles = $vehicleModel->paginate();
 
         if (empty($vehicles)) {
-            return ['success'=>false, "message" => "No hay información"];
+            return ['success' => false, "message" => "No hay información"];
         }
 
-        return ["success"=>true, "data"=>$vehicles];
+        return ["success" => true, "data" => $vehicles];
     }
 }

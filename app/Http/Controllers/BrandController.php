@@ -25,6 +25,12 @@ class BrandController extends Controller
 
         $brands = $brandModel->paginate();
 
+        $brands->getCollection()->transform(function ($value) {
+            $value->name = ucfirst(strtolower($value->name));
+
+            return $value;
+        });
+
         return ["success" => true, "data" => $brands];
     }
 }

@@ -18,7 +18,7 @@ class VehicleController extends Controller
      */
     public function findByPlate($plate)
     {
-        $vehicle = Vehicle::firstWhere('license_plate', $plate);
+        $vehicle = Vehicle::with('brand', 'owner', 'typeVehicle')->firstWhere('license_plate', $plate);
 
         if (empty($vehicle)) {
             return [];
@@ -41,7 +41,7 @@ class VehicleController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'license_plate' => 'required|unique:vehicles|max:8',
+            'license_plate' => 'required|max:8',
             'brand' => 'required',
             'type_vehicle' => 'required',
             'owner' => 'required',
